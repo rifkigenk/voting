@@ -1,0 +1,43 @@
+# Deployment Artifacts
+dist/
+build/
+.wasmer/
+
+# Environment & Secrets
+.env
+.env.local
+.env.*.local
+.secrets
+
+# Database
+*.sql
+mysql_data/
+
+# Cache & Temp
+__pycache__/
+*.pyc
+.cache/
+node_modules/
+
+# IDE
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# OS
+.DS_Store
+Thumbs.db
+.env.windows
+
+# Logs
+*.log
+logs/
+
+# Backups
+*.bak
+*.backup
+*~
+
+# Docker
+docker-compose.override.yml

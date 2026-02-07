@@ -1,0 +1,46 @@
+# Wasmer Edge Configuration for MPS Voting Application
+[app]
+name = "mps-voting"
+version = "1.0.0"
+description = "MPS Elections 2026 - Web Application for Student Organization Voting"
+
+# Backend specification
+[env]
+ENVIRONMENT = "production"
+
+# Run a web server (typically Node.js or Python based proxy)
+[module]
+name = "mps-voting"
+source = "dist/"
+
+# Route configuration for Wasmer Edge
+[[route]]
+path = "/api/*"
+method = "POST"
+handler = "handler.wasm"
+
+[[route]]
+path = "/static/*"
+method = "GET"
+handler = "static"
+
+# Environment variables required
+[env]
+DATABASE_HOST = "db.example.com"
+DATABASE_USER = "mps_user"
+DATABASE_NAME = "mps_voting"
+DATABASE_PORT = "3306"
+
+# Secrets (set via Wasmer CLI)
+[secrets]
+DATABASE_PASSWORD = "WASMER_DB_PASSWORD"
+ADMIN_PASSWORD = "WASMER_ADMIN_PASSWORD"
+
+# Build command
+[build]
+command = "npm run build"
+
+# Dev server
+[dev]
+watch = "."
+target = "php"

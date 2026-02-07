@@ -1,0 +1,61 @@
+version: '3.8'
+
+services:
+  # PHP Application Server
+  php:
+    image: php:8.2-apache
+    container_name: mps-voting-php
+    ports:
+      - "80:80"
+    volumes:
+      - ./:/var/www/html
+    environment:
+      - DATABASE_HOST=mysql
+      - DATABASE_USER=mps_voting
+      - DATABASE_PASSWORD=mps_voting_2026
+      - DATABASE_NAME=mps_voting
+      - DATABASE_PORT=3306
+    depends_on:
+      - mysql
+    networks:
+      - mps-network
+
+  # MySQL Database
+  mysql:
+    image: mysql:8.0
+    container_name: mps-voting-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: mps_voting
+      MYSQL_USER: mps_voting
+      MYSQL_PASSWORD: mps_voting_2026
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - mps-network
+    command: --default-authentication-plugin=mysql_native_password
+
+  # PhpMyAdmin (Optional - for database management)
+  phpmyadmin:
+    image: phpmyadmin:5.2
+    container_name: mps-voting-phpmyadmin
+    environment:
+      PMA_HOST: mysql
+      PMA_USER: mps_voting
+      PMA_PASSWORD: mps_voting_2026
+    ports:
+      - "8080:80"
+    depends_on:
+      - mysql
+    networks:
+      - mps-network
+
+volumes:
+  mysql_data:
+    driver: local
+
+networks:
+  mps-network:
+    driver: bridge

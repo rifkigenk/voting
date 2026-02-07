@@ -1,46 +1,50 @@
 # Wasmer Edge Configuration for MPS Voting Application
+# Static site deployment - PHP backend runs separately on cloud server
+
 [app]
 name = "mps-voting"
 version = "1.0.0"
 description = "MPS Elections 2026 - Web Application for Student Organization Voting"
 
-# Backend specification
+# Wasmer Edge serves static files from dist/ directory
 [env]
 ENVIRONMENT = "production"
 
-# Run a web server (typically Node.js or Python based proxy)
-[module]
-name = "mps-voting"
+# Image specification for Wasmer Edge
+[image]
+name = "mps-voting:latest"
 source = "dist/"
 
-# Route configuration for Wasmer Edge
-[[route]]
-path = "/api/*"
-method = "POST"
-handler = "handler.wasm"
-
-[[route]]
-path = "/static/*"
-method = "GET"
-handler = "static"
-
-# Environment variables required
-[env]
-DATABASE_HOST = "db.example.com"
-DATABASE_USER = "mps_user"
-DATABASE_NAME = "mps_voting"
-DATABASE_PORT = "3306"
-
-# Secrets (set via Wasmer CLI)
-[secrets]
-DATABASE_PASSWORD = "WASMER_DB_PASSWORD"
-ADMIN_PASSWORD = "WASMER_ADMIN_PASSWORD"
-
-# Build command
+# Build output
 [build]
-command = "npm run build"
+context = "."
 
-# Dev server
-[dev]
-watch = "."
-target = "php"
+# Enable CORS for API calls to backend
+[cors]
+allow_origins = ["*"]
+allow_methods = ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+allow_headers = ["Content-Type", "Accept", "Authorization"]
+max_age = 3600
+
+# Cache headers for static assets
+[cache]
+# HTML files - no cache (always check for updates)
+[[cache.routes]]
+path = "/*.html"
+max_age = 0
+
+# Static assets - cache for 1 day
+[[cache.routes]]
+path = "/style/**"
+max_age = 86400
+
+[[cache.routes]]
+path = "/assets/**"
+max_age = 86400
+
+# Redirects
+[[redirects]]
+from = "/"
+to = "/index.html"
+status = 200
+

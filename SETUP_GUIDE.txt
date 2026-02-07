@@ -1,0 +1,166 @@
+========================================
+MPS ELECTIONS 2026 - SETUP GUIDE
+Native PHP + MySQL Voting Application
+========================================
+
+STEP 1: CREATE DATABASE
+-----------------------
+1. Open phpMyAdmin (http://localhost/phpmyadmin)
+2. Create a new database named: mps_voting
+3. Charset: utf8_unicode_ci
+
+STEP 2: RUN DATABASE SETUP
+---------------------------
+1. Open browser: http://localhost/Projek%20MPS/mps-voting/php/database.php
+2. This will automatically create all necessary tables:
+   - voters
+   - candidates
+   - votes
+   - admin
+
+STEP 3: CREATE ADMIN ACCOUNT
+-----------------------------
+1. Open phpMyAdmin → mps_voting → admin table
+2. Add new record:
+   - username: admin
+   - password: (use password hash below)
+   - email: admin@school.com
+
+3. Generate password hash using PHP:
+   <?php echo password_hash('password123', PASSWORD_DEFAULT); ?>
+   
+   Use this hash in the password field
+
+ALTERNATIVE: Run this SQL query directly:
+INSERT INTO admin (username, password, email) VALUES 
+('admin', '$2y$10$XW8LlY6z1e5j8e5j8e5j8e5j8e5j8e5j8', 'admin@school.com');
+
+Note: Update the hash with a proper bcrypt hash of your desired password
+
+STEP 4: ADD SAMPLE DATA (OPTIONAL)
+-----------------------------------
+Run these SQL queries in phpMyAdmin:
+
+VOTERS (Sample):
+INSERT INTO voters (nisn, name, class, email) VALUES 
+('12345678901', 'Budi Santoso', 'X A', 'budi@school.com'),
+('12345678902', 'Siti Nurhaliza', 'X B', 'siti@school.com'),
+('12345678903', 'Ahmad Wijaya', 'X C', 'ahmad@school.com');
+
+CANDIDATES (Sample):
+INSERT INTO candidates (name, position, class, bio) VALUES 
+('Rini Wijaya', 'Ketua Organisasi', 'XI A', 'Siap memimpin dengan integritas'),
+('Doni Sutrisno', 'Ketua Organisasi', 'XI B', 'Inovasi untuk kemajuan bersama'),
+('Ani Suryanto', 'Wakil Ketua', 'XI A', 'Mendukung penuh kepemimpinan'),
+('Budi Raharjo', 'Wakil Ketua', 'XI C', 'Komitmen penuh untuk sekolah');
+
+STEP 5: ACCESS THE APPLICATION
+--------------------------------
+VOTER LOGIN:
+URL: http://localhost/Projek%20MPS/mps-voting/php/voter_login.php
+Enter NISN and Name to vote
+
+VIEW RESULTS:
+URL: http://localhost/Projek%20MPS/mps-voting/php/results.php
+Real-time voting results
+
+ADMIN PANEL:
+URL: http://localhost/Projek%20MPS/mps-voting/php/admin_login.php
+Username: admin
+Password: (your password)
+
+Features in Admin Panel:
+- Dashboard with statistics
+- Manage voters (add/delete)
+- Manage candidates (add/delete)
+- Export results
+- Reset voting
+
+STEP 6: FILE STRUCTURE
+----------------------
+php/
+├── connection.php         → Database connection
+├── database.php          → Create database tables
+├── voter_login.php       → Voter login page
+├── vote.php              → Voting interface
+├── results.php           → View results
+├── logout.php            → Logout voter
+├── thank_you.php         → Thank you page after voting
+├── admin_login.php       → Admin login
+├── admin_dashboard.php   → Admin dashboard
+├── admin_logout.php      → Admin logout
+├── manage_voters.php     → Add/delete voters
+├── manage_candidates.php → Add/delete candidates
+
+DATABASE STRUCTURE
+------------------
+voters Table:
+- voter_id (PK)
+- nisn (UNIQUE)
+- name
+- class
+- email
+- phone
+- has_voted (0/1)
+- created_at
+- updated_at
+
+candidates Table:
+- candidate_id (PK)
+- name
+- position
+- class
+- photo
+- bio
+- votes (count)
+- created_at
+- updated_at
+
+votes Table:
+- vote_id (PK)
+- voter_id (FK)
+- candidate_id (FK)
+- position
+- voted_at
+
+admin Table:
+- admin_id (PK)
+- username (UNIQUE)
+- password (hashed)
+- email
+- created_at
+
+IMPORTANT NOTES
+---------------
+1. Each voter can only vote once
+2. Passwords are hashed with bcrypt for security
+3. Data is stored in MySQL database
+4. Application uses prepared statements to prevent SQL injection
+5. Session management for voter and admin authentication
+6. Real-time result updates
+
+TROUBLESHOOTING
+---------------
+❌ "Connection failed": 
+   - Check MySQL server is running
+   - Verify DB credentials in connection.php
+   
+❌ "NISN ditemukan dalam daftar": 
+   - Ensure voter data is added first
+   - NISN must match exactly
+   
+❌ "Page not found": 
+   - Check file paths
+   - Ensure files are in correct directory
+
+NEXT STEPS
+----------
+1. Test voter login with sample data
+2. Test voting functionality
+3. Test admin panel
+4. Add more voters and candidates as needed
+5. Monitor voting progress in real-time results
+
+========================================
+Setup completed! Ready to go! 🗳️
+========================================

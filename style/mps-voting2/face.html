@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Face Verification</title>
+    <link rel="stylesheet" href="css/face.css">
+    <script async src="https://cdn.jsdelivr.net/npm/@vladmandic/face-api@1.7.13/dist/face-api.min.js"></script>
+    <script defer src="js/face.js"></script>
+    
+</head>
+<body>
+
+<div class="container">
+    <h1>Verifikasi Wajah</h1>
+    <p class="subtitle">Pastikan hanya satu wajah berada di dalam frame</p>
+
+    <div class="camera-box">
+        <video id="video" autoplay muted></video>
+        <div class="face-frame"></div>
+    </div>
+
+    <p id="status">Menunggu wajah...</p>
+    <div style="margin-top:12px; display:flex; gap:8px; align-items:center; justify-content:center;">
+        <input id="nisnInput" type="text" placeholder="Masukkan NISN untuk registrasi" style="padding:8px; border-radius:6px; border:1px solid #ddd; width:220px;">
+        <button id="registerBtn" style="padding:8px 12px; background:#667eea; color:#fff; border:none; border-radius:6px; cursor:pointer;">Register Face</button>
+        <a href="http://localhost/Projek%20MPS/mps-voting/php/index.php" id="dwdqwd" style="padding:8px 12px; background:#667eea; color:#fff; border:none; border-radius:6px; cursor:pointer;">Kembali</a>
+    </div>
+    <p id="registerStatus" style="text-align:center; margin-top:10px; color:#666"></p>
+    <div class="blur-overlay"></div>
+
+</div>
+
+</body>
+</html>

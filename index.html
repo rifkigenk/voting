@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MPS Elections 2026</title>
+    <link href="https://cdn.tailwindcss.com" rel="stylesheet">
+    <link rel="stylesheet" href="style/style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 60px 40px;
+            max-width: 800px;
+            text-align: center;
+        }
+        
+        .logo {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            color: #333;
+            font-size: 42px;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        
+        p {
+            color: #666;
+            font-size: 18px;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 15px 30px;
+            border-radius: 10px;
+            border: none;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+            border: 2px solid #ddd;
+        }
+        
+        .btn-secondary:hover {
+            background: #e8e8e8;
+            border-color: #667eea;
+        }
+        
+        .info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+            padding-top: 40px;
+            border-top: 2px solid #eee;
+        }
+        
+        .info-card {
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 10px;
+        }
+        
+        .info-card h3 {
+            color: #667eea;
+            font-size: 14px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+        
+        .info-card p {
+            color: #333;
+            font-size: 16px;
+            margin-bottom: 0;
+        }
+        
+        .badge {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="logo">🗳️</div>
+    
+    <div class="badge">Election Day: March 5, 2026</div>
+    
+    <h1>MPS Elections 2026</h1>
+    <p>Gunakan hak pilihmu dalam Pemilihan MPS 2026.<br>Satu suara, satu masa depan.</p>
+    
+    <div class="buttons">
+        <a href="php/voter_login.php" class="btn btn-primary">🗳️ Mulai Voting</a>
+        <a href="php/results.php" class="btn btn-secondary">📊 Lihat Hasil</a>
+        <a href="php/admin_login.php" class="btn btn-secondary">🔐 Admin</a>
+    </div>
+    
+    <div class="info">
+        <div class="info-card">
+            <h3>📝 Registrasi</h3>
+            <p>1 – 20 Feb 2026</p>
+        </div>
+        <div class="info-card">
+            <h3>🗳️ Voting</h3>
+            <p>1 – 4 Mar 2026</p>
+        </div>
+        <div class="info-card">
+            <h3>📋 Pemilihan</h3>
+            <p>5 Mar 2026</p>
+        </div>
+        <div class="info-card">
+            <h3>📢 Hasil</h3>
+            <p>6 Mar 2026</p>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

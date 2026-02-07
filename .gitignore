@@ -1,5 +1,4 @@
 # Deployment Artifacts
-dist/
 build/
 .wasmer/
 

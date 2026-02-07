@@ -1,50 +1,79 @@
-# Wasmer Edge Configuration for MPS Voting Application
-# Static site deployment - PHP backend runs separately on cloud server
+# Wasmer App Configuration - Native PHP (No Docker Required)
+# Deploys PHP directly to Wasmer Edge runtime
 
 [app]
 name = "mps-voting"
 version = "1.0.0"
-description = "MPS Elections 2026 - Web Application for Student Organization Voting"
+description = "MPS Elections 2026 - PHP Voting Application"
 
-# Wasmer Edge serves static files from dist/ directory
+# Using Wasmer's built-in PHP runtime
+[runtime]
+name = "php"
+version = "8.2"
+
+# Entry point
+entrypoint = "index.php"
+
+# Environment variables
 [env]
-ENVIRONMENT = "production"
+ENVIRONMENT="production"
+TIMEZONE="Asia/Jakarta"
+PHP_DISPLAY_ERRORS="0"
+PHP_LOG_ERRORS="1"
 
-# Image specification for Wasmer Edge
-[image]
-name = "mps-voting:latest"
-source = "dist/"
+# Database configuration
+[env]
+DATABASE_HOST="mysql.internal"
+DATABASE_USER="mps_voting"
+DATABASE_NAME="mps_voting"
+DATABASE_PORT="3306"
 
-# Build output
-[build]
-context = "."
+# MySQL addon configuration
+[services.mysql]
+type="mysql"
+version="8.4"
+automatically_provision = true
 
-# Enable CORS for API calls to backend
+# Connect MySQL service to app
+[[databases]]
+name="mysql"
+service="mysql"
+env_prefix="DATABASE"
+
+# Health check
+[[healthchecks]]
+path="/"
+initial_delay=5
+interval=30
+timeout=10
+
+# CORS headers
 [cors]
-allow_origins = ["*"]
-allow_methods = ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
-allow_headers = ["Content-Type", "Accept", "Authorization"]
-max_age = 3600
+allow_origins=["*"]
+allow_methods=["GET","POST","PUT","DELETE","OPTIONS"]
+allow_headers=["Content-Type","Accept","Authorization"]
+allow_credentials=true
+max_age=3600
 
-# Cache headers for static assets
+# Caching strategy
 [cache]
-# HTML files - no cache (always check for updates)
+# No cache for HTML
 [[cache.routes]]
-path = "/*.html"
-max_age = 0
+path="/*.html"
+max_age=0
 
-# Static assets - cache for 1 day
+# Short cache for PHP
 [[cache.routes]]
-path = "/style/**"
-max_age = 86400
+path="/php/**"
+max_age=60
+
+# Long cache for static
+[[cache.routes]]
+path="/style/**"
+max_age=86400
 
 [[cache.routes]]
-path = "/assets/**"
-max_age = 86400
+path="/assets/**"
+max_age=86400
 
-# Redirects
-[[redirects]]
-from = "/"
-to = "/index.html"
-status = 200
 

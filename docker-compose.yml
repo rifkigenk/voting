@@ -1,31 +1,39 @@
 version: '3.8'
 
 services:
-  # PHP Application Server
+  # PHP Application Server - Production ready
   php:
-    image: php:8.2-apache
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: mps-voting-php
     ports:
-      - "80:80"
+      - "80:8080"
+    environment:
+      DATABASE_HOST: mysql
+      DATABASE_USER: mps_voting
+      DATABASE_PASSWORD: mps_voting_2026
+      DATABASE_NAME: mps_voting
+      DATABASE_PORT: 3306
+      TIMEZONE: Asia/Jakarta
+      PHP_MEMORY_LIMIT: 256M
+      MAX_EXECUTION_TIME: 30
     volumes:
       - ./:/var/www/html
-    environment:
-      - DATABASE_HOST=mysql
-      - DATABASE_USER=mps_voting
-      - DATABASE_PASSWORD=mps_voting_2026
-      - DATABASE_NAME=mps_voting
-      - DATABASE_PORT=3306
+      - ./php-error.log:/var/log/apache2/error.log
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
     networks:
       - mps-network
+    restart: unless-stopped
 
   # MySQL Database
   mysql:
-    image: mysql:8.0
+    image: mysql:8.4
     container_name: mps-voting-mysql
     environment:
-      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_ROOT_PASSWORD: root_password_2026
       MYSQL_DATABASE: mps_voting
       MYSQL_USER: mps_voting
       MYSQL_PASSWORD: mps_voting_2026
@@ -33,9 +41,19 @@ services:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
+      - ./php/database.php:/docker-entrypoint-initdb.d/01-init.sql
     networks:
       - mps-network
-    command: --default-authentication-plugin=mysql_native_password
+    command: 
+      - --default-authentication-plugin=mysql_native_password
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "mps_voting", "-pmps_voting_2026"]
+      timeout: 20s
+      retries: 10
+      interval: 10s
+    restart: unless-stopped
 
   # PhpMyAdmin (Optional - for database management)
   phpmyadmin:
@@ -45,12 +63,14 @@ services:
       PMA_HOST: mysql
       PMA_USER: mps_voting
       PMA_PASSWORD: mps_voting_2026
+      PMA_ROOT_PASSWORD: root_password_2026
     ports:
       - "8080:80"
     depends_on:
       - mysql
     networks:
       - mps-network
+    restart: unless-stopped
 
 volumes:
   mysql_data:
@@ -59,3 +79,4 @@ volumes:
 networks:
   mps-network:
     driver: bridge
+
